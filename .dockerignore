@@ -1,0 +1,10 @@
+# git
+**/.git
+**/.gitignore
+
+# python
+**/*pycache*
+
+**/*.env
+**/*.venv
+
