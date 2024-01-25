@@ -13,12 +13,16 @@ ARG DEV=false
 RUN --mount=type=bind,src=requirements.txt,target=requirements.txt --mount=type=bind,src=requirements.dev.txt,target=requirements.dev.txt \
 --mount=type=cache,target=/usr/lib/python3.9/site-packages \
 python -m venv /py \
+&& apk add --update --no-cache postgresql-client \
+&& apk add --update --no-cache --virtual .tmp_build_deps \
+    build-base postgresql-dev musl-dev \
 && /py/bin/pip install --upgrade pip \
 && /py/bin/pip install -r requirements.txt \
 && if [ $DEV ]; \
 	then /py/bin/pip install -r requirements.dev.txt; \
 fi \
 # && rm -rf temp \
+&& apk del .tmp_build_deps \
 && adduser -DH django-user
 
 ENV PATH="/py/bin:$PATH"
